@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectAPI.DatabaseContext;
 
 namespace ProjectAPI.Migrations
 {
     [DbContext(typeof(Database))]
-    partial class DatabaseModelSnapshot : ModelSnapshot
+    [Migration("20230419125740_SecondMigratiom")]
+    partial class SecondMigratiom
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,6 +51,9 @@ namespace ProjectAPI.Migrations
 
                     b.Property<string>("Department_Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Position_ID")
+                        .HasColumnType("int");
 
                     b.HasKey("Department_ID");
 
@@ -118,9 +123,6 @@ namespace ProjectAPI.Migrations
                     b.Property<DateTime>("Employee_Termination_Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Position_ID")
-                        .HasColumnType("int");
-
                     b.HasKey("Employee_ID");
 
                     b.ToTable("Employees");
@@ -159,63 +161,6 @@ namespace ProjectAPI.Migrations
                     b.HasKey("Position_ID");
 
                     b.ToTable("Positions");
-                });
-
-            modelBuilder.Entity("ProjectAPI.Model.PurchaseOrder", b =>
-                {
-                    b.Property<int>("PurchaseOrder_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("PurchaseOrder_Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PurchaseOrder_Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PurchaseOrder_Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("PurchaseOrder_Total")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Supplier_ID")
-                        .HasColumnType("int");
-
-                    b.HasKey("PurchaseOrder_ID");
-
-                    b.ToTable("PurchaseOrders");
-                });
-
-            modelBuilder.Entity("ProjectAPI.Model.PurchaseOrderDetail", b =>
-                {
-                    b.Property<int>("PurchaseOrderDetail_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Product_ID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PurchaseOrderDetail_Qty_Received")
-                        .HasColumnType("int");
-
-                    b.Property<float>("PurchaseOrderDetail_Quantity")
-                        .HasColumnType("real");
-
-                    b.Property<decimal>("PurchaseOrderDetail_Subtotal")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("PurchaseOrderDetail_Unit_Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("PurchaseOrder_ID")
-                        .HasColumnType("int");
-
-                    b.HasKey("PurchaseOrderDetail_ID");
-
-                    b.ToTable("PurchaseOrderDetails");
                 });
 
             modelBuilder.Entity("ProjectAPI.Model.Register", b =>
@@ -273,30 +218,6 @@ namespace ProjectAPI.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Sale");
-                });
-
-            modelBuilder.Entity("ProjectAPI.Model.Supplier", b =>
-                {
-                    b.Property<int>("Supplier_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Supplier_Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Supplier_Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Supplier_Phone_Number")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Supplier_Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Supplier_ID");
-
-                    b.ToTable("Suppliers");
                 });
 
             modelBuilder.Entity("ProjectAPI.Model.Truck", b =>

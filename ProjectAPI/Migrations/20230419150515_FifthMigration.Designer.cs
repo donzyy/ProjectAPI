@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectAPI.DatabaseContext;
 
 namespace ProjectAPI.Migrations
 {
     [DbContext(typeof(Database))]
-    partial class DatabaseModelSnapshot : ModelSnapshot
+    [Migration("20230419150515_FifthMigration")]
+    partial class FifthMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,7 +182,7 @@ namespace ProjectAPI.Migrations
                     b.Property<decimal>("PurchaseOrder_Total")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Supplier_ID")
+                    b.Property<int>("Supplier")
                         .HasColumnType("int");
 
                     b.HasKey("PurchaseOrder_ID");
