@@ -10,8 +10,8 @@ using ProjectAPI.DatabaseContext;
 namespace ProjectAPI.Migrations
 {
     [DbContext(typeof(Database))]
-    [Migration("20230419150515_FifthMigration")]
-    partial class FifthMigration
+    [Migration("20230420150304_AddFKEmployeeDepartmentPosition")]
+    partial class AddFKEmployeeDepartmentPosition
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,16 +27,55 @@ namespace ProjectAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("computerLocation")
+                    b.Property<string>("ComputerLocation")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("computerNumber")
+                    b.Property<int>("ComputerNumber")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("Computers");
+                });
+
+            modelBuilder.Entity("ProjectAPI.Model.Customer", b =>
+                {
+                    b.Property<int>("Customer_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Customer_Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Customer_City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Customer_Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Customer_Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Customer_First_Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Customer_Last_Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Customer_Phone_Number")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Customer_Postal_Code")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Customer_Region")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Customer_ID");
+
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("ProjectAPI.Model.Department", b =>
@@ -59,23 +98,30 @@ namespace ProjectAPI.Migrations
 
             modelBuilder.Entity("ProjectAPI.Model.Driver", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Driver_ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("firstName")
+                    b.Property<string>("Driver_FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("lastName")
+                    b.Property<string>("Driver_LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("salesMan")
+                    b.Property<int>("Driver_License_Number")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Driver_Phone_Number")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("truck")
+                    b.Property<string>("Driver_Status")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Truck_ID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Driver_ID");
 
                     b.ToTable("Drivers");
                 });
@@ -125,6 +171,10 @@ namespace ProjectAPI.Migrations
 
                     b.HasKey("Employee_ID");
 
+                    b.HasIndex("Department_ID");
+
+                    b.HasIndex("Position_ID");
+
                     b.ToTable("Employees");
                 });
 
@@ -163,6 +213,75 @@ namespace ProjectAPI.Migrations
                     b.ToTable("Positions");
                 });
 
+            modelBuilder.Entity("ProjectAPI.Model.Product", b =>
+                {
+                    b.Property<int>("Product_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Product_Batch_ID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Product_Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Product_Name")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Product_Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Product_Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Product_Type_ID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Product_ID");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("ProjectAPI.Model.ProductBatch", b =>
+                {
+                    b.Property<int>("ProductBatch_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ProductBatch_Number")
+                        .HasColumnType("int");
+
+                    b.Property<double>("ProductBatch_Quantity")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Product_ID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ProductionBatch_Date")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ProductBatch_ID");
+
+                    b.ToTable("ProductBatches");
+                });
+
+            modelBuilder.Entity("ProjectAPI.Model.ProductType", b =>
+                {
+                    b.Property<int>("ProductType_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ProductType_Name")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductType_ID");
+
+                    b.ToTable("ProductTypes");
+                });
+
             modelBuilder.Entity("ProjectAPI.Model.PurchaseOrder", b =>
                 {
                     b.Property<int>("PurchaseOrder_ID")
@@ -182,7 +301,7 @@ namespace ProjectAPI.Migrations
                     b.Property<decimal>("PurchaseOrder_Total")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Supplier")
+                    b.Property<int>("Supplier_ID")
                         .HasColumnType("int");
 
                     b.HasKey("PurchaseOrder_ID");
@@ -245,36 +364,95 @@ namespace ProjectAPI.Migrations
 
             modelBuilder.Entity("ProjectAPI.Model.Sales", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Sales_ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Amount")
+                    b.Property<int>("Customer_ID")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<int>("Driver_ID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Payment_Type_ID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SalesMan_ID")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Sales_Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("Sales_Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("PercentageChange")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Quantity")
+                    b.Property<int>("Truck_ID")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("TotalSales")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("ID");
+                    b.HasKey("Sales_ID");
 
                     b.ToTable("Sale");
+                });
+
+            modelBuilder.Entity("ProjectAPI.Model.SalesDetails", b =>
+                {
+                    b.Property<int>("SalesDetails_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Product_ID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SalesDetails_Price")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SalesDetails_Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SalesDetails_Tax")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SalesDetails_Total")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Sales_ID")
+                        .HasColumnType("int");
+
+                    b.HasKey("SalesDetails_ID");
+
+                    b.ToTable("SalesDetails");
+                });
+
+            modelBuilder.Entity("ProjectAPI.Model.SalesMan", b =>
+                {
+                    b.Property<int>("SalesMan_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("SalesMan_Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SalesMan_Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SalesMan_FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SalesMan_GhanaPostAddress")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SalesMan_LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SalesMan_Phone_Number")
+                        .HasColumnType("int");
+
+                    b.HasKey("SalesMan_ID");
+
+                    b.ToTable("SalesMen");
                 });
 
             modelBuilder.Entity("ProjectAPI.Model.Supplier", b =>
@@ -303,49 +481,52 @@ namespace ProjectAPI.Migrations
 
             modelBuilder.Entity("ProjectAPI.Model.Truck", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Truck_ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("dailySales")
-                        .HasColumnType("int");
-
-                    b.Property<int>("dispenserBottlePrice")
-                        .HasColumnType("int");
-
-                    b.Property<int>("dispenserBottlesRemaining")
-                        .HasColumnType("int");
-
-                    b.Property<int>("dispenserBottlesSold")
-                        .HasColumnType("int");
-
-                    b.Property<int>("dispenserBottlesTaken")
-                        .HasColumnType("int");
-
-                    b.Property<string>("registrationNumber")
+                    b.Property<string>("Truck_Capacity")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("sachetBagPrice")
+                    b.Property<int>("Truck_Plate_Number")
                         .HasColumnType("int");
 
-                    b.Property<int>("sachetBagsSold")
-                        .HasColumnType("int");
-
-                    b.Property<int>("sachetBagsTaken")
-                        .HasColumnType("int");
-
-                    b.Property<int>("sachetRemaining")
-                        .HasColumnType("int");
-
-                    b.Property<string>("truckDriver")
+                    b.Property<string>("Truck_Status")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("truckSalesMan")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
+                    b.HasKey("Truck_ID");
 
                     b.ToTable("Trucks");
+                });
+
+            modelBuilder.Entity("ProjectAPI.Model.Employee", b =>
+                {
+                    b.HasOne("ProjectAPI.Model.Department", "Department")
+                        .WithMany("Employees")
+                        .HasForeignKey("Department_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectAPI.Model.Position", "Position")
+                        .WithMany("Employees")
+                        .HasForeignKey("Position_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Position");
+                });
+
+            modelBuilder.Entity("ProjectAPI.Model.Department", b =>
+                {
+                    b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("ProjectAPI.Model.Position", b =>
+                {
+                    b.Navigation("Employees");
                 });
 #pragma warning restore 612, 618
         }

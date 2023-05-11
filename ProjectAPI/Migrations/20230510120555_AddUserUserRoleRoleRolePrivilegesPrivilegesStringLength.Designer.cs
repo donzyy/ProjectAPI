@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectAPI.DatabaseContext;
 
 namespace ProjectAPI.Migrations
 {
     [DbContext(typeof(Database))]
-    partial class DatabaseModelSnapshot : ModelSnapshot
+    [Migration("20230510120555_AddUserUserRoleRoleRolePrivilegesPrivilegesStringLength")]
+    partial class AddUserUserRoleRoleRolePrivilegesPrivilegesStringLength
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -376,11 +378,16 @@ namespace ProjectAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("Privileges_ID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Role_Name")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Role_ID");
+
+                    b.HasIndex("Privileges_ID");
 
                     b.ToTable("Roles");
                 });
@@ -745,6 +752,13 @@ namespace ProjectAPI.Migrations
                     b.Navigation("PurchaseOrder");
                 });
 
+            modelBuilder.Entity("ProjectAPI.Model.Role", b =>
+                {
+                    b.HasOne("ProjectAPI.Model.Privilege", null)
+                        .WithMany("Roles")
+                        .HasForeignKey("Privileges_ID");
+                });
+
             modelBuilder.Entity("ProjectAPI.Model.RolePrivileges", b =>
                 {
                     b.HasOne("ProjectAPI.Model.Privilege", "Privilege")
@@ -860,6 +874,11 @@ namespace ProjectAPI.Migrations
             modelBuilder.Entity("ProjectAPI.Model.Position", b =>
                 {
                     b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("ProjectAPI.Model.Privilege", b =>
+                {
+                    b.Navigation("Roles");
                 });
 
             modelBuilder.Entity("ProjectAPI.Model.Product", b =>

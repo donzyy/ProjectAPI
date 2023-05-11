@@ -45,22 +45,22 @@ namespace ProjectAPI
 
             //This Code contains the protocol conntrols used by the API's to communicate with a front-end
 
-        //This code handles the JWT token
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer(options =>
-        {
-            options.TokenValidationParameters = new TokenValidationParameters
+            //This code handles the JWT token
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
             {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = "your-issuer",
-                ValidAudience = "your-audience",
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your-secret-key"))
-            };
-        });
-        //This code handles the JWT token
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = "your-issuer",
+                    ValidAudience = "your-audience",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your-secret-key"))
+                };
+            });
+            //This code handles the JWT token
 
             //Database context connection for In-Memory
             //services.AddDbContext<Database>(options => options.UseInMemoryDatabase("ProjectDatabase"));
@@ -74,7 +74,31 @@ namespace ProjectAPI
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProjectAPI", Version = "v1" });
-            });
+
+                 // Define the security scheme
+                var securityScheme = new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Description = "JWT Authorization header using the Bearer scheme.",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT"
+                };
+
+                // Add the security scheme to the Swagger UI
+                c.AddSecurityDefinition("Bearer", securityScheme);
+
+                // Add the security requirement to the Swagger UI
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        securityScheme,
+                        new List<string>()
+                    }
+                });
+           
+           
+            }); 
         }
 
 
@@ -101,6 +125,8 @@ namespace ProjectAPI
             //This code enables the Cors handle Http request to the api
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

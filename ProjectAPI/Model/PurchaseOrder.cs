@@ -16,5 +16,13 @@ namespace ProjectAPI.Model
         public decimal PurchaseOrder_Total { get; set; }
         public DateTime PurchaseOrder_Date { get; set; }
         public string PurchaseOrder_Status { get; set; }
+
+        //Foreign Key
+        [ForeignKey("Supplier_ID")]
+        public Supplier Supplier { get; set; }
+
+        
+        //Link
+        public ICollection<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
     }
 }

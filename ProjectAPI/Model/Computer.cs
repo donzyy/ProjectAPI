@@ -14,8 +14,8 @@ namespace ProjectAPI.Model
         [Key, JsonIgnore]
         public Guid Id { get; set; }
         [Required]
-        public int computerNumber { get; set; }
+        public int ComputerNumber { get; set; }
         [Required]
-        public string computerLocation { get; set; }
+        public string ComputerLocation { get; set; }
     }
 }

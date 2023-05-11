@@ -12,5 +12,8 @@ namespace ProjectAPI.Model
         public int Position_ID { get; set; }
         public string Position_Name { get; set; }
         public string Position_Description { get; set; }
+
+        // Linking Property to Employee
+        public ICollection<Employee> Employees { get; set; }
     }
 }

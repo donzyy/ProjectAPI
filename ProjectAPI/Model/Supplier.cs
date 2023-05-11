@@ -14,5 +14,8 @@ namespace ProjectAPI.Model
         public string Supplier_Phone_Number { get; set; }
         public string Supplier_Email { get; set; }
         public string Supplier_Status { get; set; }
+
+        //Link
+        public ICollection<PurchaseOrder> PurchaseOrders { get; set; }
     }
 }

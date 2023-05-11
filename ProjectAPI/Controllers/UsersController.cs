@@ -12,47 +12,47 @@ namespace ProjectAPI.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class LoginsController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly Database _context;
 
-        public LoginsController(Database context)
+        public UsersController(Database context)
         {
             _context = context;
         }
 
-        // GET: api/Logins
+        // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Login>>> GetLogins()
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await _context.Logins.ToListAsync();
+            return await _context.Users.ToListAsync();
         }
 
-        // GET: api/Logins/5
+        // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Login>> GetLogin(Guid id)
+        public async Task<ActionResult<User>> GetUser(int id)
         {
-            var login = await _context.Logins.FindAsync(id);
+            var User = await _context.Users.FindAsync(id);
 
-            if (login == null)
+            if (User == null)
             {
                 return NotFound();
             }
 
-            return login;
+            return User;
         }
 
-        // PUT: api/Logins/5
+        // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLogin(Guid id, Login login)
+        public async Task<IActionResult> PutUser(int User_ID, User User)
         {
-            if (id != login.Id)
+            if (User_ID != User.User_ID)
             {
                 return BadRequest();
             }
 
-            _context.Entry(login).State = EntityState.Modified;
+            _context.Entry(User).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace ProjectAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LoginExists(id))
+                if (!UserExists(User_ID))
                 {
                     return NotFound();
                 }
@@ -73,36 +73,36 @@ namespace ProjectAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Logins
+        // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Login>> PostLogin(Login login)
+        public async Task<ActionResult<User>> PostUser(User User)
         {
-            _context.Logins.Add(login);
+            _context.Users.Add(User);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLogin", new { id = login.Id }, login);
+            return CreatedAtAction("GetUser", new { id = User.User_ID }, User);
         }
 
-        // DELETE: api/Logins/5
+        // DELETE: api/Users/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLogin(Guid id)
+        public async Task<IActionResult> DeleteUser(int User_ID)
         {
-            var login = await _context.Logins.FindAsync(id);
-            if (login == null)
+            var User = await _context.Users.FindAsync(User_ID);
+            if (User == null)
             {
                 return NotFound();
             }
 
-            _context.Logins.Remove(login);
+            _context.Users.Remove(User);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool LoginExists(Guid id)
+        private bool UserExists(int User_ID)
         {
-            return _context.Logins.Any(e => e.Id == id);
+            return _context.Users.Any(e => e.User_ID == User_ID);
         }
     }
 }

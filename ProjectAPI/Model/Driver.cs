@@ -10,12 +10,20 @@ namespace ProjectAPI.Model
 {
     public class Driver
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key, JsonIgnore]
-        public Guid Id { get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        public string truck { get; set; }
-        public string salesMan { get; set; }
+        [Key]
+        public int Driver_ID { get; set; }
+        public string Driver_FirstName { get; set; }
+        public string Driver_LastName { get; set; }
+        public string  Driver_Phone_Number { get; set; }
+        public int Driver_License_Number { get; set; }
+        public string Driver_Status { get; set; }
+        public int Truck_ID { get; set; }
+
+        //Foreign
+        [ForeignKey("Truck_ID")]
+        public Truck Truck { get; set; }
+
+        //Link
+        public ICollection<Sales> Sales { get; set; }
     }
 }

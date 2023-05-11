@@ -45,9 +45,9 @@ namespace ProjectAPI.Controllers
         // PUT: api/Drivers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDriver(Guid id, Driver driver)
+        public async Task<IActionResult> PutDriver(int id, Driver driver)
         {
-            if (id != driver.Id)
+            if (id != driver.Driver_ID)
             {
                 return BadRequest();
             }
@@ -81,7 +81,7 @@ namespace ProjectAPI.Controllers
             _context.Drivers.Add(driver);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetDriver", new { id = driver.Id }, driver);
+            return CreatedAtAction("GetDriver", new { id = driver.Driver_ID }, driver);
         }
 
         // DELETE: api/Drivers/5
@@ -100,9 +100,9 @@ namespace ProjectAPI.Controllers
             return NoContent();
         }
 
-        private bool DriverExists(Guid id)
+        private bool DriverExists(int id)
         {
-            return _context.Drivers.Any(e => e.Id == id);
+            return _context.Drivers.Any(e => e.Driver_ID == id);
         }
     }
 }

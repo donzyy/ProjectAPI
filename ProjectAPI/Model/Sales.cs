@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,25 +10,33 @@ namespace ProjectAPI.Model
     public class Sales
     {
         [Key]
-        public int ID { get; set; }
-        [Required]
-        public DateTime Date { get; set; }
-        [Required]
-        public int Amount { get; set; }
-         [Required]
-        public string ProductName { get; set; }
+        public int Sales_ID { get; set; }
+        public int Customer_ID { get; set; }
+        public DateTime Sales_Date { get; set; }
+        public decimal Sales_Amount { get; set; }
+        public int Payment_Type_ID { get; set; }
+        public int SalesMan_ID { get; set; }
+        public int Truck_ID { get; set; }
+        public int Driver_ID { get; set; }
 
-        [Required]
-        public int Quantity { get; set; }
+        //Foreign Keys
+        [ForeignKey("Customer_ID")]
+        public Customer Customer { get; set; }
 
-        [Required]
-        public decimal Price { get; set; }
-
-        [Required]
-        public decimal TotalSales { get; set; }
-
-        [Required]
-        public decimal PercentageChange { get; set; }
+        [ForeignKey("Payment_Type_ID")]
+        public PaymentType PaymentType { get; set; }
         
+        [ForeignKey("SalesMan_ID")]
+        public SalesMan SalesMan { get; set; }
+
+        [ForeignKey("Driver_ID")]
+        public Driver Driver { get; set; }
+
+        [ForeignKey("Truck_ID")]
+        public Truck Truck { get; set; }
+
+        // Linking Property
+        public ICollection<SalesDetails> SalesDetails { get; set; }
+
     }
 }

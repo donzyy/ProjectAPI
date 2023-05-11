@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using ProjectAPI.Model;
 
 namespace ProjectAPI.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class SalesController : ControllerBase
@@ -47,7 +49,7 @@ namespace ProjectAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSales(int id, Sales sales)
         {
-            if (id != sales.ID)
+            if (id != sales.Sales_ID)
             {
                 return BadRequest();
             }
@@ -81,7 +83,7 @@ namespace ProjectAPI.Controllers
             _context.Sale.Add(sales);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSales", new { id = sales.ID }, sales);
+            return CreatedAtAction("GetSales", new { id = sales.Sales_ID }, sales);
         }
 
         // DELETE: api/Sales/5
@@ -102,7 +104,7 @@ namespace ProjectAPI.Controllers
 
         private bool SalesExists(int id)
         {
-            return _context.Sale.Any(e => e.ID == id);
+            return _context.Sale.Any(e => e.Sales_ID == id);
         }
     }
 }

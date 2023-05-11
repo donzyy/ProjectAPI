@@ -10,20 +10,14 @@ namespace ProjectAPI.Model
 {
     public class Truck
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key, JsonIgnore]
-        public Guid Id { get; set; }
-        public string registrationNumber { get; set; }
-        public string truckDriver { get; set; }
-        public string truckSalesMan { get; set; }
-        public int sachetBagsTaken { get; set; }
-        public int dispenserBottlesTaken { get; set; }
-        public int sachetBagsSold { get; set; }
-        public int dispenserBottlesSold { get; set; }
-        public int sachetRemaining { get; set; }
-        public int dispenserBottlesRemaining { get; set; }
-        public int sachetBagPrice { get; set; }
-        public int dispenserBottlePrice { get; set; }
-        public int dailySales { get; set; }
+        [Key]
+      public int Truck_ID { get; set; }
+      public int Truck_Plate_Number { get; set; }
+      public string Truck_Capacity { get; set; }
+      public string Truck_Status { get; set; }
+
+      //Link
+      public ICollection<Sales> Sales { get; set; }
+      public ICollection<Driver> Drivers { get; set; }
     }
 }

@@ -47,9 +47,9 @@ namespace ProjectAPI.Controllers
         // PUT: api/Trucks/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTruck(Guid id, Truck truck)
+        public async Task<IActionResult> PutTruck(int id, Truck truck)
         {
-            if (id != truck.Id)
+            if (id != truck.Truck_ID)
             {
                 return BadRequest();
             }
@@ -83,7 +83,7 @@ namespace ProjectAPI.Controllers
             _context.Trucks.Add(truck);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTruck", new { id = truck.Id }, truck);
+            return CreatedAtAction("GetTruck", new { id = truck.Truck_ID }, truck);
         }
 
         // DELETE: api/Trucks/5
@@ -102,9 +102,9 @@ namespace ProjectAPI.Controllers
             return NoContent();
         }
 
-        private bool TruckExists(Guid id)
+        private bool TruckExists(int id)
         {
-            return _context.Trucks.Any(e => e.Id == id);
+            return _context.Trucks.Any(e => e.Truck_ID == id);
         }
     }
 }

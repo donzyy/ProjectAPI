@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectAPI.DatabaseContext;
 
 namespace ProjectAPI.Migrations
 {
     [DbContext(typeof(Database))]
-    partial class DatabaseModelSnapshot : ModelSnapshot
+    [Migration("20230508141105_AddUserUserRoleRoleRolePrivilegesPrivileges")]
+    partial class AddUserUserRoleRoleRolePrivilegesPrivileges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -219,12 +221,10 @@ namespace ProjectAPI.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Privileges_Description")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Privileges_Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Privileges_ID");
 
@@ -376,11 +376,15 @@ namespace ProjectAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("Privileges_ID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Role_Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Role_ID");
+
+                    b.HasIndex("Privileges_ID");
 
                     b.ToTable("Roles");
                 });
@@ -567,31 +571,25 @@ namespace ProjectAPI.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("User_Address")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("User_City")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("User_Country")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("User_Date_Of_Birth")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("User_Digital_Address")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("User_Email")
-                        .HasMaxLength(70)
-                        .HasColumnType("nvarchar(70)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("User_First_Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("User_Gender")
                         .IsRequired()
@@ -601,32 +599,25 @@ namespace ProjectAPI.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("User_Last_Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("User_Password")
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("User_Password_Salt")
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("User_Phone_Number")
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("User_Profile_Image")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("User_State")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("User_UserName")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("User_ID");
 
@@ -745,6 +736,13 @@ namespace ProjectAPI.Migrations
                     b.Navigation("PurchaseOrder");
                 });
 
+            modelBuilder.Entity("ProjectAPI.Model.Role", b =>
+                {
+                    b.HasOne("ProjectAPI.Model.Privilege", null)
+                        .WithMany("Roles")
+                        .HasForeignKey("Privileges_ID");
+                });
+
             modelBuilder.Entity("ProjectAPI.Model.RolePrivileges", b =>
                 {
                     b.HasOne("ProjectAPI.Model.Privilege", "Privilege")
@@ -860,6 +858,11 @@ namespace ProjectAPI.Migrations
             modelBuilder.Entity("ProjectAPI.Model.Position", b =>
                 {
                     b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("ProjectAPI.Model.Privilege", b =>
+                {
+                    b.Navigation("Roles");
                 });
 
             modelBuilder.Entity("ProjectAPI.Model.Product", b =>

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectAPI.DatabaseContext;
 
 namespace ProjectAPI.Migrations
 {
     [DbContext(typeof(Database))]
-    partial class DatabaseModelSnapshot : ModelSnapshot
+    [Migration("20230420234609_AddFKDriverCustomerPaymentTypeTrucksProductProductBatchProductTypePurchaseOrderAndTheRest")]
+    partial class AddFKDriverCustomerPaymentTypeTrucksProductProductBatchProductTypePurchaseOrderAndTheRest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -178,6 +180,23 @@ namespace ProjectAPI.Migrations
                     b.ToTable("Employees");
                 });
 
+            modelBuilder.Entity("ProjectAPI.Model.Login", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Logins");
+                });
+
             modelBuilder.Entity("ProjectAPI.Model.PaymentType", b =>
                 {
                     b.Property<int>("PaymentType_ID")
@@ -209,26 +228,6 @@ namespace ProjectAPI.Migrations
                     b.HasKey("Position_ID");
 
                     b.ToTable("Positions");
-                });
-
-            modelBuilder.Entity("ProjectAPI.Model.Privilege", b =>
-                {
-                    b.Property<int>("Privileges_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Privileges_Description")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Privileges_Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Privileges_ID");
-
-                    b.ToTable("Privileges");
                 });
 
             modelBuilder.Entity("ProjectAPI.Model.Product", b =>
@@ -369,42 +368,27 @@ namespace ProjectAPI.Migrations
                     b.ToTable("PurchaseOrderDetails");
                 });
 
-            modelBuilder.Entity("ProjectAPI.Model.Role", b =>
+            modelBuilder.Entity("ProjectAPI.Model.Register", b =>
                 {
-                    b.Property<int>("Role_ID")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Role_Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Role_ID");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Roles");
-                });
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-            modelBuilder.Entity("ProjectAPI.Model.RolePrivileges", b =>
-                {
-                    b.Property<int>("Role_Privileges_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.HasKey("Id");
 
-                    b.Property<int?>("Privileges_ID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Role_ID")
-                        .HasColumnType("int");
-
-                    b.HasKey("Role_Privileges_ID");
-
-                    b.HasIndex("Privileges_ID");
-
-                    b.HasIndex("Role_ID");
-
-                    b.ToTable("RolePrivileges");
+                    b.ToTable("Registration");
                 });
 
             modelBuilder.Entity("ProjectAPI.Model.Sales", b =>
@@ -559,102 +543,6 @@ namespace ProjectAPI.Migrations
                     b.ToTable("Trucks");
                 });
 
-            modelBuilder.Entity("ProjectAPI.Model.User", b =>
-                {
-                    b.Property<int>("User_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("User_Address")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("User_City")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("User_Country")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("User_Date_Of_Birth")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("User_Digital_Address")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("User_Email")
-                        .HasMaxLength(70)
-                        .HasColumnType("nvarchar(70)");
-
-                    b.Property<string>("User_First_Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("User_Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(1)");
-
-                    b.Property<bool>("User_Inactive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("User_Last_Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("User_Password")
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
-
-                    b.Property<string>("User_Password_Salt")
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
-
-                    b.Property<string>("User_Phone_Number")
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
-                    b.Property<string>("User_Profile_Image")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("User_State")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("User_UserName")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("User_ID");
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("ProjectAPI.Model.UserRole", b =>
-                {
-                    b.Property<int>("User_Role_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("Role_ID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("User_ID")
-                        .HasColumnType("int");
-
-                    b.HasKey("User_Role_ID");
-
-                    b.HasIndex("Role_ID");
-
-                    b.HasIndex("User_ID");
-
-                    b.ToTable("UserRoles");
-                });
-
             modelBuilder.Entity("ProjectAPI.Model.Driver", b =>
                 {
                     b.HasOne("ProjectAPI.Model.Truck", "Truck")
@@ -745,21 +633,6 @@ namespace ProjectAPI.Migrations
                     b.Navigation("PurchaseOrder");
                 });
 
-            modelBuilder.Entity("ProjectAPI.Model.RolePrivileges", b =>
-                {
-                    b.HasOne("ProjectAPI.Model.Privilege", "Privilege")
-                        .WithMany()
-                        .HasForeignKey("Privileges_ID");
-
-                    b.HasOne("ProjectAPI.Model.Role", "Role")
-                        .WithMany("RolePrivileges")
-                        .HasForeignKey("Role_ID");
-
-                    b.Navigation("Privilege");
-
-                    b.Navigation("Role");
-                });
-
             modelBuilder.Entity("ProjectAPI.Model.Sales", b =>
                 {
                     b.HasOne("ProjectAPI.Model.Customer", "Customer")
@@ -822,21 +695,6 @@ namespace ProjectAPI.Migrations
                     b.Navigation("Sales");
                 });
 
-            modelBuilder.Entity("ProjectAPI.Model.UserRole", b =>
-                {
-                    b.HasOne("ProjectAPI.Model.Role", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("Role_ID");
-
-                    b.HasOne("ProjectAPI.Model.User", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("User_ID");
-
-                    b.Navigation("Role");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("ProjectAPI.Model.Customer", b =>
                 {
                     b.Navigation("Sales");
@@ -881,13 +739,6 @@ namespace ProjectAPI.Migrations
                     b.Navigation("PurchaseOrderDetails");
                 });
 
-            modelBuilder.Entity("ProjectAPI.Model.Role", b =>
-                {
-                    b.Navigation("RolePrivileges");
-
-                    b.Navigation("UserRoles");
-                });
-
             modelBuilder.Entity("ProjectAPI.Model.Sales", b =>
                 {
                     b.Navigation("SalesDetails");
@@ -908,11 +759,6 @@ namespace ProjectAPI.Migrations
                     b.Navigation("Drivers");
 
                     b.Navigation("Sales");
-                });
-
-            modelBuilder.Entity("ProjectAPI.Model.User", b =>
-                {
-                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }
